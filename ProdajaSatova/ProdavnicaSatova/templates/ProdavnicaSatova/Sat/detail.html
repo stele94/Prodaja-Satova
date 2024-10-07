@@ -1,0 +1,25 @@
+{% extends "ProdavnicaSatova/base.html" %}
+{% load static %}
+{% block title %}
+{{ sat.naziv }}
+{% endblock %}
+{% block content %}
+<div class="product-detail"><div><img width="100" height="100" style="width:100px; height=100px;"src="{% if sat.slika %}{{ sat.slika.url }}
+        {% else %} {% static "img\\no_image.png" %}{% endif %}"></div>
+    <h1>{{ sat.naziv }}</h1>
+    <h2>
+        <a href="{{ sat.tip.ApsolutniURL }}">
+            {{ sat.tip }}
+        </a>
+    </h2>
+    <p class="price">&euro;{{ sat.cena }}</p>
+    <!-- ovde ce biti za korpu-->
+    <form action="{% url "KorpaZaKupovinu:DodajUKorpu" sat.id %}" method="post">
+        {{ formazadodavanjesataukorpu }}
+        {% csrf_token %}
+        <input type="submit" value="Dodaj u korpu">
+    </form> 
+    {{ sat.opis|linebreaks }}
+    <p id="demo">{% url "KorpaZaKupovinu:DodajUKorpu" sat.id %}</p> 
+</div>
+{% endblock %}

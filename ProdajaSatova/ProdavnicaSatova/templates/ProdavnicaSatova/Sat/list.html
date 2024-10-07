@@ -1,0 +1,81 @@
+{% extends "ProdavnicaSatova/base.html" %}
+{% load static %}
+{% block title %} 
+    {% if tip %}
+        {{ tip.naziv }}
+    {% else %}
+        {% if kategorija %}
+            {{ kategorija.naziv }}
+        {% else %}
+            {% if brend %}
+                {{ brend.naziv }}
+            {% else %}
+                Satovi
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div id="sidebar">
+        <h3>Tipovi</h3>
+        <ul>
+            <li {% if not tip %}class="selected"{% endif %}>
+                <a href="{% url "ProdavnicaSatova:ListaSatova" %}">All</a>
+            </li>
+            {% for c in tipovi %}
+            <li {% if tip.slug == c.slug %}class="selected"{% endif %}>
+                <a href="{{ c.ApsolutniURL }}">{{ c.naziv }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <h3>Kategorije</h3>
+        <ul>
+            <li {% if not kategorija %}class="selected"{% endif %}>
+                <a href="{% url "ProdavnicaSatova:ListaSatova" %}">All</a>
+            </li>
+            {% for c in kategorije %}
+            <li {% if kategorija.slug == c.slug %}class="selected"{% endif %}>
+                <a href="{{ c.ApsolutniURL }}">{{ c.naziv }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <h3>Brendovi</h3>
+        <ul>
+            <li {% if not brend %}class="selected"{% endif %}>
+                <a href="{% url "ProdavnicaSatova:ListaSatova" %}">All</a>
+            </li>
+            {% for c in brendovi %}
+            <li {% if brend.slug == c.slug %}class="selected"{% endif %}>
+                <a href="{{ c.ApsolutniURL }}">{{ c.naziv }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="main" class="product-list">
+        <h1>
+            {% if tip %}
+                {{ tip.naziv }}
+            {% else %}
+                {% if kategorija %}
+                    {{ kategorija.naziv }}
+                {% else %}
+                    {% if brend %}
+                        {{ brend.naziv }}
+                    {% else %}
+                        Satovi
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </h1>
+        {% for sat in satovi %}
+        <div class="item">
+            <a href="{{ sat.ApsolutniURL }}">
+                <img src="{% if sat.slika %}{{ sat.slika.url }}
+                {% else %}{% static "img/no_image.png" %}{% endif %}"></a>
+            <a href="{{ sat.ApsolutniURL }}">{{ sat.naziv }}</a>
+            <br>
+            &euro;{{ sat.cena }}
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
